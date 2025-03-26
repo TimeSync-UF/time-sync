@@ -1,0 +1,44 @@
+.homepage-container{
+    position: relative;
+    padding: 20px;
+}
+
+.hamburger-menu{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.calendar{
+    height: 300px;
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: 0px;
+    left: -160px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    width: 200px;
+}
+
+.filter-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.filter-dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.filter-dropdown li:hover {
+    background-color: #F3F3F3;
+}
