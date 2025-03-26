@@ -1,0 +1,156 @@
+.contacts-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+  padding-bottom: 1000px;
+}
+
+.contacts-heading {
+  margin-top: 1rem;
+}
+
+.contacts-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.contacts-divider {
+  height: 1px;
+  background-color: #ccc;
+  width: 60%;
+  margin: 0 auto 2rem auto;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.add-button,
+.edit-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+}
+
+.add-button {
+  background-color: #4CAF50; /* Green */
+}
+
+.edit-button {
+  background-color: #2196F3; /* Blue */
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.edit-button:hover {
+  background-color: #1976d2;
+}
+
+.contacts-divider {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin: 2rem auto;
+  width: 80%;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.contact-form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contacts-list {
+  margin-top: 1.5rem;
+}
+
+.contact-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  position: relative;
+  text-align: left;
+}
+
+.contact-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.contact-card p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+.remove-icon {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  cursor: pointer;
+  color: #a90000;
+}
+
+.contact-content h3 {
+  margin-bottom: 0.5rem;
+}
+
+.edit-fields input {
+  display: block;
+  width: 95%;
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.save-button,
+.cancel-button {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}

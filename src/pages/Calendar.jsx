@@ -92,7 +92,7 @@ export default function HomeCalendar() {
                     <div className="filter-dropdown">
                         <ul>
                             <li onClick={() => navigate("/create-meeting")}>Create Meeting</li>
-                            <li onClick={() => navigate("/contacts-list")}>Contacts List</li>
+                            <li onClick={() => navigate("/contacts")}>Contacts</li>
                             <li onClick={() => navigate("/previous-meetings")}>Previous Meetings</li>
                             <li onClick={() => navigate("/FAQ")}>FAQ</li>
                         </ul>
