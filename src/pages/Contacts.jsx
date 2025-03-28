@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import './Contacts.css';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
+import { FaHome } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 export default function Contacts() {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [contacts, setContacts] = useState([]);
@@ -65,6 +68,11 @@ export default function Contacts() {
 
   return (
     <div className="contacts-container">
+      {/* Home Button */}
+      <button className="home-button" onClick={() => navigate('/')}>
+        <FaHome /> Home
+      </button>
+      
       <h1>Contacts</h1>
       <div className="button-group">
         <button className="add-button" onClick={() => setShowForm(true)}>

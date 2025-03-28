@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Playfair+Display:wght@400..900&display=swap");
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Playfair Display", serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -12,14 +14,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Abril Fatface", cursive;
+}
+
 a {
   font-weight: 500;
-  color: #000; /* Black text for links */
+  color: #000;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #333; /* Darker hover effect */
+  color: #333;
 }
 
 body {
@@ -38,8 +44,8 @@ h1 {
 }
 
 button {
-  border: none; /* Removes the border */
-  outline: none; /* Removes focus outline */
+  border: none;
+  outline: none;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -50,7 +56,7 @@ button {
 }
 
 button:hover {
-  background-color: #f0f0f0; /* Light grey hover */
+  background-color: #f0f0f0;
 }
 
 @media (prefers-color-scheme: dark) {
