@@ -24,12 +24,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  min-width: 100vw;
   min-height: 100vh;
   background-color: white;
   color: black;
+  display: block; /* Ensure normal flow */
 }
 
 h1 {
@@ -38,20 +37,30 @@ h1 {
 }
 
 button {
-  border: none; /* Removes the border */
-  outline: none; /* Removes focus outline */
-  padding: 0.6em 1.2em;
+  border: none;
+  outline: none;
+  padding: 0;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: white;
-  color: black;
   cursor: pointer;
+  background: none; /* Ensures no background */
+  box-shadow: none; /* Removes any possible shadow */
+  display: flex; /* Aligns icon properly */
+  align-items: center;
 }
 
-button:hover {
-  background-color: #f0f0f0; /* Light grey hover */
+button:hover,
+button:focus {
+  background: none !important; /* Prevents background from appearing */
+  outline: none !important; /* Removes focus outline */
+  box-shadow: none !important; /* Removes any default browser styling */
 }
+
+svg {
+  pointer-events: none; /* Prevents click effects on the icon itself */
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {

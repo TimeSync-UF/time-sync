@@ -17,15 +17,28 @@
 
 .contacts-container {
   padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
   text-align: center;
   display: block;
   padding-bottom: 1000px;
 }
 
-.contacts-heading {
-  margin-top: 1rem;
+.contacts-header {
+  display: flex; /* Use Flexbox for horizontal layout */
+  justify-content: space-between; /* Space out the title and search bar */
+  align-items: center; /* Vertically align the items */
+  margin-bottom: 1rem; /* Space below the header */
+}
+
+.search-bar {
+  display: flex; /* Align the input and button in a row */
+  gap: 10px; /* Space between the input and button */
+}
+
+.search-bar input {
+  /* padding: 0.5rem; */
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .contacts-buttons {
@@ -100,27 +113,6 @@
   margin-top: 1.5rem;
 }
 
-.contact-card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-top: 1rem;
-  position: relative;
-  text-align: left;
-}
-
-.contact-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.contact-card p {
-  margin: 0.25rem 0;
-  font-size: 0.95rem;
-}
-
 .edit-icon {
   position: absolute;
   top: 10px;
@@ -170,4 +162,33 @@
 
 .save-button:hover {
   background-color: #45a049;
+}
+
+.contact-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  text-align: left; /* Ensures text aligns to the left */
+}
+
+.contact-card h3, .contact-card p {
+  margin: 0; /* Removes default margins for a cleaner look */
+}
+
+.delete-button {
+  color: red;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.5rem; 
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

@@ -5,7 +5,7 @@ import { Calendar, globalizeLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import globalize from "globalize";
 import { useNavigate } from "react-router-dom";
-import { supabase, AuthContext } from "../AuthProvider";
+import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 const localizer = globalizeLocalizer(globalize);
 
