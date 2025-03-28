@@ -1,0 +1,183 @@
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+.onboarding-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 5rem 0;
+}
+
+.onboarding-header, .login-header, .signup-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.onboarding-title {
+  font-size: 3rem;
+  font-family: 'Abril Fatface', sans-serif;
+  color: #1d2d44;
+}
+
+.onboarding-subtitle {
+  font-size: 1.125rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  color: #748cab;
+}
+
+.onboarding-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 20rem;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-label {
+  font-size: 1.125rem;
+  margin-bottom: 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+}
+
+.submit-button {
+  padding: 0.5rem;
+  border-radius: 1.25rem;
+  background-color: #1d2d44;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 800;
+  transition: opacity 0.3s;
+}
+
+.submit-button:hover {
+  opacity: 0.8;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 5rem 0;
+}
+
+.login-title {
+  font-size: 3rem;
+  font-family: 'Abril Fatface', sans-serif;
+  color: #1d2d44;
+}
+
+.login-subtitle {
+  font-size: 1.125rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  color: #748cab;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 20rem;
+  text-align: left;
+}
+
+.form-input {
+  padding: 0.5rem;
+  border: 2px solid #000;
+  border-radius: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+.signup-link {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+.signup-link-text {
+  color: #1D4ED8;
+  text-decoration: underline;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+.signup-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 5rem 0;
+}
+
+.signup-title {
+  font-size: 3rem;
+  font-family: 'Abril Fatface', sans-serif;
+  color: #1d2d44;
+}
+
+.signup-subtitle {
+  font-size: 1.125rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  color: #748cab;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 20rem;
+  text-align: left;
+}
+
+.signup-link {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.signup-link-text {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
+.password-requirements {
+  list-style-type: none;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  color: #767575;
+  line-height: 1.2;
+}
+
+.password-requirements li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.password-error {
+  color: #e53e3e;
+  font-size: 0.875rem;
+}
