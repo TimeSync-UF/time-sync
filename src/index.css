@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Playfair+Display:wght@400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Serif+Text:ital@0;1&display=swap");
 
 :root {
-  font-family: "Playfair Display", serif;
+  font-family: "DM Serif Text", serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -14,8 +14,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Abril Fatface", cursive;
+h1, h2, h3{
+  font-family: "Alfa Slab One", cursive;
+  color: #1d2d44;
+}
+
+h4, h5, h6 {
+  font-family: "DM Serif Text", cursive;
+  color: #748cab;
 }
 
 a {
@@ -30,12 +36,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  min-width: 100vw;
   min-height: 100vh;
   background-color: white;
   color: black;
+  display: block;
 }
 
 h1 {
@@ -50,14 +55,24 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: white;
-  color: black;
   cursor: pointer;
+  align-items: center;
+  background-color: transparent;
 }
 
-button:hover {
-  background-color: #f0f0f0;
+button:hover,
+button:focus,
+button:active {
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
 }
+
+
+svg {
+  pointer-events: none;
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {

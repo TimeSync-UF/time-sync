@@ -1,173 +1,156 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Contacts.css';
-import { FaEdit } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
 import { FaHome } from "react-icons/fa";
+import { MdDeleteForever } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 export default function Contacts() {
   const navigate = useNavigate();
-  const [showForm, setShowForm] = useState(false);
-  const [isEditingMode, setIsEditingMode] = useState(false);
   const [contacts, setContacts] = useState([]);
-  const [newContact, setNewContact] = useState({
-    name: '',
-    timezone: '',
-    email: '',
-  });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const { session } = useContext(AuthContext);
 
-  const [editIndex, setEditIndex] = useState(null);
-  const [editContact, setEditContact] = useState({ name: '', timezone: '', email: '' });
+  useEffect(() => {
+    if (!session?.user?.id) return;
+    const userId = session.user.id;
 
-  const handleInputChange = (e, isEdit = false) => {
-    const { name, value } = e.target;
-    if (isEdit) {
-      setEditContact({ ...editContact, [name]: value });
-    } else {
-      setNewContact({ ...newContact, [name]: value });
+    const fetchContacts = async () => {
+      const { data: profileData, error: profileError } = await supabase
+        .from("Profiles")
+        .select("contacts")
+        .eq("id", userId)
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching profile:", profileError.message);
+        return;
+      }
+
+      if (!profileData?.contacts || profileData.contacts.length === 0) {
+        setContacts([]);
+        return;
+      }
+
+      const { data: contactsData, error: contactsError } = await supabase
+        .from("Profiles")
+        .select("id, first_name, last_name, email, timezone")
+        .in("id", profileData.contacts);
+
+      if (contactsError) {
+        console.error("Error fetching contacts:", contactsError.message);
+        return;
+      }
+
+      setContacts(contactsData);
+    };
+
+    fetchContacts();
+  }, [session]);
+
+  const openModal = async () => {
+    setShowModal(true);
+
+    const { data, error } = await supabase
+      .from("Profiles")
+      .select("id, first_name, last_name, email");
+
+    if (error) {
+      console.error("Error fetching users:", error.message);
+      return;
     }
+
+    // Exclude already added contacts
+    const currentContactIds = contacts.map(contact => contact.id);
+    const filteredUsers = data.filter(user => !currentContactIds.includes(user.id));
+
+    setAllUsers(filteredUsers);
   };
 
-  const handleSave = () => {
-    if (newContact.name && newContact.email && newContact.timezone) {
+  const handleAddContact = async (contactId) => {
+    const { error } = await supabase
+      .from("Profiles")
+      .update({ contacts: supabase.raw(`array_append(contacts, '${contactId}')`) })
+      .eq("id", session.user.id);
+
+    if (error) {
+      console.error("Error adding contact:", error.message);
+    } else {
+      const newContact = allUsers.find(user => user.id === contactId);
       setContacts([...contacts, newContact]);
-      setNewContact({ name: '', timezone: '', email: '' });
-      setShowForm(false);
-    } else {
-      alert('Please fill out all fields.');
+      setShowModal(false);
     }
   };
 
-  const handleEditClick = (index) => {
-    setEditIndex(index);
-    setEditContact(contacts[index]);
-  };
-
-  const handleEditSave = () => {
-    const updatedContacts = [...contacts];
-    updatedContacts[editIndex] = editContact;
-    setContacts(updatedContacts);
-    setEditIndex(null);
-    setEditContact({ name: '', timezone: '', email: '' });
-  };
-
-  const handleDelete = (index) => {
-    const updatedContacts = contacts.filter((_, i) => i !== index);
-    setContacts(updatedContacts);
-  };
-
-  const handleCancelAdd = () => {
-    setNewContact({ name: '', timezone: '', email: '' });
-    setShowForm(false);
-  };
-
-  const handleCancelEdit = () => {
-    setEditIndex(null);
-    setEditContact({ name: '', timezone: '', email: '' });
-  };
+  const filteredUsers = allUsers.filter(user =>
+    `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="contacts-container">
-      {/* Home Button */}
-      <button className="home-button" onClick={() => navigate('/')}>
-        <FaHome /> Home
-      </button>
-      
-      <h1>Contacts</h1>
-      <div className="button-group">
-        <button className="add-button" onClick={() => setShowForm(true)}>
-          Add Contact
-        </button>
-        <button className="edit-button" onClick={() => setIsEditingMode(!isEditingMode)}>
-          Edit Contacts
+      {/* Home button */}
+      <div className="home-button" onClick={() => navigate("/home")}>
+        <FaHome />
+      </div>
+
+      <div className="contacts-header">
+        <h1>Contacts</h1>
+        <button className="add-button" onClick={openModal}>
+          Add Contacts
         </button>
       </div>
 
-      <hr className="contacts-divider" />
+      {contacts.length === 0 ? (
+        <p>You have no contacts.</p>
+      ) : (
+        <ul className="contacts-list">
+          {contacts.map((contact) => (
+            <li key={contact.id} className="contact-card">
+              <div>
+                <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                <h4>Email: {contact.email}</h4>
+                <h4>Timezone: {contact.timezone}</h4>
+              </div>
+              <button className="delete-button" onClick={() => handleDelete(contact.id)}>
+                <MdDeleteForever />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {showForm && (
-        <div className="contact-form">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={newContact.name}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <input
-            type="text"
-            name="timezone"
-            placeholder="Timezone"
-            value={newContact.timezone}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={newContact.email}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <div className="form-buttons">
-            <button className="save-button" onClick={handleSave}>
-              Save
-            </button>
-            <button className="cancel-button" onClick={handleCancelAdd}>
-              Cancel
-            </button>
+      {/* Add Contact Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Add Contacts</h2>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <div className="scroll-container">
+              <ul className="search-results">
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
+                    <li key={user.id} className="search-item">
+                      <span>{user.first_name} {user.last_name}</span>
+                      <button onClick={() => handleAddContact(user.id)}>Add</button>
+                    </li>
+                  ))
+                ) : (
+                  <p>No new contacts available</p>
+                )}
+              </ul>
+            </div>
+            <button className="close-button" onClick={() => setShowModal(false)}>Close</button>
           </div>
         </div>
       )}
-
-      <div className="contacts-list">
-        {contacts.map((contact, index) => (
-          <div className="contact-card" key={index}>
-            {isEditingMode && editIndex !== index && (
-              <FaEdit className="edit-icon" onClick={() => handleEditClick(index)} />
-            )}
-            {isEditingMode && editIndex === index && (
-              <MdDeleteForever className="remove-icon" onClick={() => handleDelete(index)} />
-            )}
-
-            {editIndex === index ? (
-              <div className="edit-fields">
-                <input
-                  type="text"
-                  name="name"
-                  value={editContact.name}
-                  onChange={(e) => handleInputChange(e, true)}
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={editContact.email}
-                  onChange={(e) => handleInputChange(e, true)}
-                />
-                <input
-                  type="text"
-                  name="timezone"
-                  value={editContact.timezone}
-                  onChange={(e) => handleInputChange(e, true)}
-                />
-                <div className="form-buttons">
-                  <button className="save-button" onClick={handleEditSave}>
-                    Save
-                  </button>
-                  <button className="cancel-button" onClick={handleCancelEdit}>
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="contact-content">
-                <h3>{contact.name}</h3>
-                <p>Email: {contact.email}</p>
-                <p>Time Zone: {contact.timezone}</p>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
