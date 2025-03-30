@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Playfair+Display:wght@400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Serif+Text:ital@0;1&display=swap");
 
 :root {
-  font-family: "Playfair Display", serif;
+  font-family: "DM Serif Text", serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -14,8 +14,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Abril Fatface", cursive;
+h1, h2, h3{
+  font-family: "Alfa Slab One", cursive;
+  color: #1d2d44;
+}
+
+h4, h5, h6 {
+  font-family: "DM Serif Text", cursive;
+  color: #748cab;
 }
 
 a {
@@ -34,7 +40,7 @@ body {
   min-height: 100vh;
   background-color: white;
   color: black;
-  display: block; /* Ensure normal flow */
+  display: block;
 }
 
 h1 {
@@ -50,21 +56,21 @@ button {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  background: none; /* Ensures no background */
-  box-shadow: none; /* Removes any possible shadow */
-  display: flex; /* Aligns icon properly */
   align-items: center;
+  background-color: transparent;
 }
 
 button:hover,
-button:focus {
-  background: none !important; /* Prevents background from appearing */
-  outline: none !important; /* Removes focus outline */
-  box-shadow: none !important; /* Removes any default browser styling */
+button:focus,
+button:active {
+  outline: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
 }
 
+
 svg {
-  pointer-events: none; /* Prevents click effects on the icon itself */
+  pointer-events: none;
 }
 
 

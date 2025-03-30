@@ -27,8 +27,8 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-header">
-        <h1 className="login-title">TimeSync</h1>
-        <span className="login-subtitle">Connection Across the Globe</span>
+        <h1>TimeSync</h1>
+        <h4>Connection Across the Globe</h4>
       </div>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="form-group">

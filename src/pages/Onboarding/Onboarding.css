@@ -35,8 +35,17 @@
   flex-direction: column;
   gap: 1.25rem;
   width: 100%;
-  max-width: 20rem;
+  max-width: 25rem;
   text-align: left;
+}
+.name-container {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+
+.name-input {
+  flex: 1;
 }
 
 .form-group {
@@ -74,19 +83,6 @@
   flex-direction: column;
   gap: 2.5rem;
   padding: 5rem 0;
-}
-
-.login-title {
-  font-size: 3rem;
-  font-family: 'Abril Fatface', sans-serif;
-  color: #1d2d44;
-}
-
-.login-subtitle {
-  font-size: 1.125rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 800;
-  color: #748cab;
 }
 
 .login-form {
@@ -129,19 +125,6 @@
   flex-direction: column;
   gap: 2.5rem;
   padding: 5rem 0;
-}
-
-.signup-title {
-  font-size: 3rem;
-  font-family: 'Abril Fatface', sans-serif;
-  color: #1d2d44;
-}
-
-.signup-subtitle {
-  font-size: 1.125rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 800;
-  color: #748cab;
 }
 
 .signup-form {

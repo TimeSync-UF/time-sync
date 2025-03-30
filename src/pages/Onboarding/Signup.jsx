@@ -84,19 +84,17 @@ export default function Signup() {
       {/* Logo and Title */}
       <img src="/logo.png" alt="Logo" className="w-32 h-32" />
       <div className="onboarding-header">
-        <h1 className="onboarding-title">TimeSync</h1>
-        <span className="onboarding-subtitle">
-          Connection Across the Globe
-        </span>
+        <h1>TimeSync</h1>
+        <h4>Connection Across the Globe</h4>
       </div>
       <form
         className="onboarding-form"
         onSubmit={handleSubmit}
       >
         {/* First Name and Last Name Inputs */}
-        <div className="form-group">
-          <div className="flex space-x-4">
-            <span className="w-1/2">
+        <div className="form-group name-fields">
+          <div className="name-container">
+            <div className="name-input">
               <p className="form-label">First Name</p>
               <input
                 type="text"
@@ -105,8 +103,8 @@ export default function Signup() {
                 className="form-input"
                 required
               />
-            </span>
-            <span className="w-1/2">
+            </div>
+            <div className="name-input">
               <p className="form-label">Last Name</p>
               <input
                 type="text"
@@ -115,7 +113,7 @@ export default function Signup() {
                 className="form-input"
                 required
               />
-            </span>
+            </div>
           </div>
         </div>
 
@@ -191,10 +189,10 @@ export default function Signup() {
         >
           Create Account
         </button>
-        <div className="form-footer">
+        <div className="signup-link">
           Already have an account?
           <a
-            className="form-link"
+            className="signup-link-text"
             href="/login"
           >
             Log In!

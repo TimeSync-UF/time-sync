@@ -52,8 +52,8 @@ export default function Onboarding() {
   return (
     <div className="onboarding-container">
       <div className="onboarding-header">
-        <h1 className="onboarding-title">TimeSync</h1>
-        <span className="onboarding-subtitle">Connection Across the Globe</span>
+        <h1>TimeSync</h1>
+        <h4>Connection Across the Globe</h4>
       </div>
       <form className="onboarding-form" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -74,7 +74,7 @@ export default function Onboarding() {
             id="timezone"
             name="timezone"
             value={timezone}
-            onChange={setTimezone}
+            onChange={(selectedOption) => setTimezone(selectedOption.value)}
             className="form-input"
             required
           />

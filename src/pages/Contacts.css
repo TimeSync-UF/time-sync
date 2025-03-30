@@ -8,7 +8,12 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: #007bff;
+  color: #1d2d44;
+}
+
+.home-button svg {
+  width: 2rem;
+  height: 2rem;
 }
 
 .home-button svg {
@@ -23,15 +28,15 @@
 }
 
 .contacts-header {
-  display: flex; /* Use Flexbox for horizontal layout */
-  justify-content: space-between; /* Space out the title and search bar */
-  align-items: center; /* Vertically align the items */
-  margin-bottom: 1rem; /* Space below the header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .search-bar {
-  display: flex; /* Align the input and button in a row */
-  gap: 10px; /* Space between the input and button */
+  display: flex;
+  gap: 10px;
 }
 
 .search-bar input {
@@ -73,19 +78,11 @@
 }
 
 .add-button {
-  background-color: #4CAF50; /* Green */
+  background-color: #1d2d44
 }
 
 .edit-button {
   background-color: #2196F3; /* Blue */
-}
-
-.add-button:hover {
-  background-color: #45a049;
-}
-
-.edit-button:hover {
-  background-color: #1976d2;
 }
 
 .contacts-divider {
@@ -173,15 +170,11 @@
   border-radius: 8px;
   padding: 1rem;
   margin-top: 1rem;
-  text-align: left; /* Ensures text aligns to the left */
-}
-
-.contact-card h3, .contact-card p {
-  margin: 0; /* Removes default margins for a cleaner look */
+  text-align: left;
 }
 
 .delete-button {
-  color: red;
+  color: #1d2d44;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -191,4 +184,80 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.delete-button svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 400px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-input {
+  width: 90%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.scroll-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-item button {
+  background-color: #1d2d44;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  background-color: #1d2d44;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
