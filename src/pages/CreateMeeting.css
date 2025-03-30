@@ -1,0 +1,87 @@
+.create-meeting-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.create-meeting-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.contact-select .contact-entry {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.selected-contacts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.selected-contacts li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.save-button {
+  display: block;
+  margin: 2rem auto;
+  padding: 0.6rem 1.5rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.home-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #1d2d44;
+}
+
+.home-button svg {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 5px;
+}
+
+.meetings-section {
+  margin-top: 3rem;
+  border-top: 1px solid #ccc;
+  padding-top: 2rem;
+}
+
+.meeting-list {
+  list-style: none;
+  padding: 0;
+}
+
+.meeting-card {
+  background-color: #f1f1f1;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
