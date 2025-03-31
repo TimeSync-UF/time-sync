@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import './FAQ.css';
 import { FaChevronDown, FaChevronUp, FaHome } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+
 const faqs = [
   {
     question: 'HOW DOES THIS APP HANDLE DIFFERENT TIMEZONES?',
-    answer: `Our app automatically detects each user's local timezone and converts all meeting times accordingly.
-
-When you schedule or view a meeting, you'll always see it in your own timezone — and the other participants will see it in theirs.
-No need to calculate time differences or worry about daylight saving changes — we handle all of that in the background to make scheduling seamless across the globe.`,
+    answer: `Our app automatically detects each user's local timezone and converts all meeting times accordingly.\n\nWhen you schedule or view a meeting, you'll always see it in your own timezone — and the other participants will see it in theirs.\n\nNo need to calculate time differences or worry about daylight saving changes — we handle all of that in the background to make scheduling seamless across the globe.`,
   },
   {
     question: 'WHAT HAPPENS IF SOMEONE CHANGES THEIR TIME ZONE?',
-    answer: `If a participant changes their timezone, our app will automatically update all scheduled meeting times for everyone involved to reflect the new timezone.`,
+    answer: `If a participant changes their timezone, our app will automatically update all scheduled meeting times for everyone involved.`,
   },
   {
     question: 'IS THIS APP FREE TO USE?',
@@ -29,7 +27,7 @@ export default function FAQPage() {
   const navigate = useNavigate();
 
   const toggleFAQ = (index) => {
-    setOpenIndex(index === openIndex ? null : index);
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
@@ -37,11 +35,17 @@ export default function FAQPage() {
       <button className="home-button" onClick={() => navigate('/')}>
         <FaHome /> Home
       </button>
+
       <h1 className="faq-heading">Frequently Asked Questions</h1>
+
       <div className="faq-list">
         {faqs.map((faq, index) => (
-          <div key={index} className={`faq-item ${openIndex === index ? 'open' : ''}`}>
-            <div className="faq-question" onClick={() => toggleFAQ(index)}>
+          <div
+            key={index}
+            className={`faq-item ${openIndex === index ? 'open' : ''}`}
+            onClick={() => toggleFAQ(index)}
+          >
+            <div className="faq-question">
               <span>{faq.question}</span>
               {openIndex === index ? <FaChevronUp /> : <FaChevronDown />}
             </div>
