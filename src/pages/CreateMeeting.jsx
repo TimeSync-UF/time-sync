@@ -8,6 +8,8 @@ export default function CreateMeeting() {
   const [title, setTitle] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [meetings, setMeetings] = useState([]);
@@ -73,6 +75,8 @@ export default function CreateMeeting() {
       title,
       start_time: new Date(startTime).toISOString(),
       end_time: new Date(endTime).toISOString(),
+      location,
+      description,
       participants: selectedContacts.map(c => c.id),
     };
 
@@ -109,6 +113,7 @@ export default function CreateMeeting() {
           placeholder="Enter meeting title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
       </div>
 
@@ -120,6 +125,7 @@ export default function CreateMeeting() {
           type="datetime-local"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
+          required
         />
       </div>
 
@@ -132,6 +138,27 @@ export default function CreateMeeting() {
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
         />
+      </div>
+
+      {/* Location Input */}
+      <div className="input-group">
+        <label htmlFor="location">Location:</label>
+        <input
+          id="location"
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+      </div>
+
+      {/* Description Input */}
+      <div className="input-group">
+        <label htmlFor="description">Description:</label>
+        <textarea
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        ></textarea>
       </div>
 
       <div className="contacts-container">
