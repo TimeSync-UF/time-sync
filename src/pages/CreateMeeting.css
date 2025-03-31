@@ -85,3 +85,28 @@ input[type="datetime-local"] {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.contact-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.contacts-list {
+  margin-top: 1.5rem;
+}
+
+.add-button{
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  background-color: #1d2d44
+}

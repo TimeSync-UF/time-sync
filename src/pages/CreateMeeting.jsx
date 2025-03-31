@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import './CreateMeeting.css';
+import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 export default function CreateMeeting() {
   const [title, setTitle] = useState('');
@@ -9,16 +10,53 @@ export default function CreateMeeting() {
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [meetings, setMeetings] = useState([]);
-
+  const { session } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Simulated contacts list (replace with Supabase later)
+  // // Simulated contacts list (replace with Supabase later)
+  // useEffect(() => {
+  //   setContacts([
+  //     { name: 'Dimitri Dimitrakis', email: 'ddimitrakis@ufl.edu' },
+  //     { name: 'Jane Smith', email: 'jane@example.com' }
+  //   ]);
+  // }, []);
+
   useEffect(() => {
-    setContacts([
-      { name: 'Dimitri Dimitrakis', email: 'ddimitrakis@ufl.edu' },
-      { name: 'Jane Smith', email: 'jane@example.com' }
-    ]);
-  }, []);
+    if (!session?.user?.id) return;
+    const userId = session.user.id;
+
+    const fetchContacts = async () => {
+      const { data: profileData, error: profileError } = await supabase
+        .from("Profiles")
+        .select("contacts")
+        .eq("id", userId)
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching profile:", profileError.message);
+        return;
+      }
+
+      if (!profileData?.contacts || profileData.contacts.length === 0) {
+        setContacts([]);
+        return;
+      }
+
+      const { data: contactsData, error: contactsError } = await supabase
+        .from("Profiles")
+        .select("id, first_name, last_name, email, timezone")
+        .in("id", profileData.contacts);
+
+      if (contactsError) {
+        console.error("Error fetching contacts:", contactsError.message);
+        return;
+      }
+
+      setContacts(contactsData);
+    };
+
+    fetchContacts();
+  }, [session]);
 
   const handleAddContact = (email) => {
     if (!selectedContacts.includes(email)) {
@@ -72,15 +110,18 @@ export default function CreateMeeting() {
         onChange={(e) => setDatetime(e.target.value)}
       />
 
-      <div className="contact-select">
-        <h3>Select Contacts:</h3>
+      <ul className="contacts-list">
         {contacts.map((contact) => (
-          <div key={contact.email} className="contact-entry">
-            <span>{contact.name} ({contact.email})</span>
-            <button onClick={() => handleAddContact(contact.email)}>Add</button>
-          </div>
+          <li key={contact.id} className="contact-card">
+            <div>
+              <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+              <h4>Email: {contact.email}</h4>
+              <h4>Timezone: {contact.timezone}</h4>
+            </div>
+            <button className="add-button">Add</button>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {selectedContacts.length > 0 && (
         <div className="selected-contacts">
