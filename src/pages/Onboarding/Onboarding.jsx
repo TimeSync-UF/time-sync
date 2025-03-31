@@ -34,11 +34,12 @@ export default function Onboarding() {
 
     const { data, error } = await supabase
       .from("Profiles")
-      .upsert({
+      .update({
         id: session.user.id,
-        organization,
-        timezone
+        organization: organization,
+        timezone: timezone
       })
+      .eq("id", session.user.id)
       .select();
     if (error) {
       alert("Error updating profile: " + error.message);
