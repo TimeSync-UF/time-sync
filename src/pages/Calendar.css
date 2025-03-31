@@ -42,3 +42,26 @@
 .filter-dropdown li:hover {
     background-color: #F3F3F3;
 }
+
+/* Style for events in agenda view */
+.rbc-agenda-event-cell {
+  background-color: #3174ad;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  margin: 2px 0;
+}
+
+/* Hover effect for events */
+.rbc-event:hover, 
+.rbc-agenda-event-cell:hover {
+  background-color: #1d2d44 !important;
+}
+
+/* Make the cursor a pointer when hovering */
+.rbc-event, 
+.rbc-agenda-event-cell, 
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td:first-child {
+  cursor: pointer;
+}
