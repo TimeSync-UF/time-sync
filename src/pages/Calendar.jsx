@@ -9,6 +9,23 @@ import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 const localizer = globalizeLocalizer(globalize);
 
+const mockEvents = [ // TODO: Remove this when not needed
+  {
+    title: "Project Review",
+    start: new Date(new Date().setHours(14, 0, 0)),
+    end: new Date(new Date().setHours(15, 30, 0)),
+    allDay: false,
+    meetingId: "mock-meeting-1",
+  },
+  {
+    title: "Client Meeting",
+    start: new Date(new Date().setHours(10, 0, 0)),
+    end: new Date(new Date().setHours(11, 0, 0)),
+    allDay: false,
+    meetingId: "mock-meeting-2",
+  }
+];
+
 export default function HomeCalendar() {
     const navigate = useNavigate();
     const [timeZone, setTimeZone] = useState("");
@@ -17,7 +34,7 @@ export default function HomeCalendar() {
     const [date, setDate] = useState(new Date()); // Track the current date
     const { session } = useContext(AuthContext);
     const [firstName, setFirstName] = useState("");
-    const [events, setEvents] = useState([]); // Removed sample events
+    const [events, setEvents] = useState(mockEvents); // TODO: Remove mockEvents when not needed
 
     useEffect(() => {
         setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -68,6 +85,7 @@ export default function HomeCalendar() {
             start: new Date(meeting.start_time),
             end: new Date(meeting.end_time),
             allDay: false,
+            meetingId: meeting.id
           }));
           setEvents(formattedEvents);
         } else {
@@ -82,6 +100,11 @@ export default function HomeCalendar() {
     // Handle navigation (Today, Next, Back)
     const handleNavigate = (newDate) => {
         setDate(newDate);
+    };
+
+    // Navigate to the meeting details page using the meeting ID
+    const handleSelectEvent = (event) => { // TODO: Leads to a empty page. Need to fix.
+        navigate(`/meeting/${event.meetingId}`); 
     };
 
     return (
@@ -113,6 +136,7 @@ export default function HomeCalendar() {
                     onView={(view) => setCurrentView(view)}
                     date={date} // Bind to current date state
                     onNavigate={handleNavigate} // Handle navigation
+                    onSelectEvent={handleSelectEvent}
                     style={{ height: "100%", width: "100%" }}
                 />
             </div>
