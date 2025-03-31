@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { supabase, AuthContext } from "../../AuthProvider";
-import "./Onboarding.css"; // We will use the same CSS file as before
+import "./Onboarding.css";
+import logo from "../../assets/logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-header">
+        <img src={logo} alt="Logo" className="logo" />
         <h1>TimeSync</h1>
         <h4>Connection Across the Globe</h4>
       </div>
