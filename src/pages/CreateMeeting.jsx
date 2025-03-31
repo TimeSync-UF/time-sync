@@ -6,20 +6,13 @@ import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 export default function CreateMeeting() {
   const [title, setTitle] = useState('');
-  const [datetime, setDatetime] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [meetings, setMeetings] = useState([]);
   const { session } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  // // Simulated contacts list (replace with Supabase later)
-  // useEffect(() => {
-  //   setContacts([
-  //     { name: 'Dimitri Dimitrakis', email: 'ddimitrakis@ufl.edu' },
-  //     { name: 'Jane Smith', email: 'jane@example.com' }
-  //   ]);
-  // }, []);
 
   useEffect(() => {
     if (!session?.user?.id) return;
@@ -58,88 +51,127 @@ export default function CreateMeeting() {
     fetchContacts();
   }, [session]);
 
-  const handleAddContact = (email) => {
-    if (!selectedContacts.includes(email)) {
-      setSelectedContacts([...selectedContacts, email]);
-    }
+  const handleAddContact = (contactId) => {
+    const contact = contacts.find(c => c.id === contactId);
+    if (!contact || selectedContacts.some(c => c.id === contactId)) return;
+    setSelectedContacts([...selectedContacts, contact]);
   };
 
-  const handleRemoveContact = (email) => {
-    setSelectedContacts(selectedContacts.filter(c => c !== email));
+  const handleRemoveContact = (contactId) => {
+    setSelectedContacts(selectedContacts.filter(c => c.id !== contactId));
   };
 
-  const handleSubmit = () => {
-    if (!title || !datetime || selectedContacts.length === 0) {
-      alert('Please fill in all fields and add at least one contact.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!title || !startTime || !endTime) {
+      alert("Please fill in all fields.");
       return;
     }
 
-    const newMeeting = {
+    const meetingData = {
       title,
-      datetime,
-      contacts: selectedContacts,
+      start_time: new Date(startTime).toISOString(),
+      end_time: new Date(endTime).toISOString(),
+      participants: selectedContacts.map(c => c.id),
     };
 
-    setMeetings([...meetings, newMeeting]);
+    const { data, error } = await supabase
+      .from("Meetings")
+      .insert([meetingData]);
 
-    // Clear form
+    if (error) {
+      console.error("Error creating meeting:", error.message);
+      return;
+    }
+
+    setMeetings([...meetings, meetingData]);
     setTitle('');
-    setDatetime('');
+    setStartTime('');
+    setEndTime('');
     setSelectedContacts([]);
   };
 
   return (
     <div className="create-meeting-container">
-      {/* Home Button */}
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
       </div>
 
       <h1>Create Meeting</h1>
 
-      <input
-        type="text"
-        placeholder="Meeting Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      {/* Meeting Title Input */} 
+      <div className="input-group">
+        <label htmlFor="meeting-title">Meeting Title:</label>
+        <input
+          id="meeting-title"
+          type="text"
+          placeholder="Enter meeting title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
 
-      <input
-        type="datetime-local"
-        value={datetime}
-        onChange={(e) => setDatetime(e.target.value)}
-      />
+      {/* Start Time Input */}
+      <div className="input-group">
+        <label htmlFor="start-time">Start Time:</label>
+        <input
+          id="start-time"
+          type="datetime-local"
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
+        />
+      </div>
 
-      <ul className="contacts-list">
-        {contacts.map((contact) => (
-          <li key={contact.id} className="contact-card">
-            <div>
-              <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
-              <h4>Email: {contact.email}</h4>
-              <h4>Timezone: {contact.timezone}</h4>
-            </div>
-            <button className="add-button">Add</button>
-          </li>
-        ))}
-      </ul>
+      {/* End Time Input */}
+      <div className="input-group">
+        <label htmlFor="end-time">End Time:</label>
+        <input
+          id="end-time"
+          type="datetime-local"
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        />
+      </div>
 
-      {selectedContacts.length > 0 && (
-        <div className="selected-contacts">
-          <h4>Added Contacts:</h4>
-          <ul>
-            {selectedContacts.map((email) => (
-              <li key={email}>
-                {email}
-                <button onClick={() => handleRemoveContact(email)}>Remove</button>
+      <div className="contacts-container">
+        {/* Available Contacts */}
+        <div className="contacts-box">
+          <h3>Available Contacts</h3>
+          <ul className="contacts-list">
+            {contacts.map((contact) => (
+              <li key={contact.id} className="contact-card">
+                <div>
+                  <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                  <h4>Timezone: {contact.timezone}</h4>
+                </div>
+                <button className="add-button" onClick={() => handleAddContact(contact.id)}>Add</button>
               </li>
             ))}
           </ul>
         </div>
-      )}
+
+        {/* Selected Contacts */}
+        <div className="selected-contacts-box">
+          <h3>Added Contacts</h3>
+          {selectedContacts.length > 0 ? (
+            <ul className="selected-contacts-list">
+              {selectedContacts.map((contact) => (
+                <li key={contact.id} className="selected-contact-card">
+                  <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                  <button className="remove-button" onClick={() => handleRemoveContact(contact.id)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No contacts added yet.</p>
+          )}
+        </div>
+      </div>
+
 
       <button className="save-button" onClick={handleSubmit}>Create Meeting</button>
 
-      {/* Scheduled Meetings Section */}
       {meetings.length > 0 && (
         <div className="meetings-section">
           <h2>Scheduled Meetings</h2>
@@ -147,18 +179,35 @@ export default function CreateMeeting() {
             {meetings.map((meeting, index) => (
               <li key={index} className="meeting-card">
                 <h3>{meeting.title}</h3>
-                <p>
-                    <strong>Date/Time:</strong>{" "}
-                    {new Date(meeting.datetime).toLocaleString([], {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        hour12: true
-                    })}
-                </p>
-                <p><strong>Participants:</strong> {meeting.contacts.join(', ')}</p>
+                <h4>
+                  <strong>Start:</strong>{" "}
+                  {new Date(meeting.start_time).toLocaleString([], {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
+                </h4>
+                <h4>
+                  <strong>End:</strong>{" "}
+                  {new Date(meeting.end_time).toLocaleString([], {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
+                </h4>
+                <h4>
+                  <strong>Participants: </strong> 
+                  {meeting.participants.map(participantId => {
+                    const participant = contacts.find(c => c.id === participantId);
+                    return participant ? `${participant.first_name} ${participant.last_name}` : 'Unknown';
+                  }).join(', ')}
+                </h4>
               </li>
             ))}
           </ul>
