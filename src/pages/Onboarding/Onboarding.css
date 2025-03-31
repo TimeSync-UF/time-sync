@@ -47,6 +47,7 @@
   display: flex;
   gap: 2rem;
   width: 100%;
+  font-weight: 900;
 }
 
 .name-input {
@@ -54,6 +55,12 @@
 }
 
 .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group-time {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -106,6 +113,16 @@
   font-family: 'Playfair Display', serif;
   font-weight: 400;
 }
+
+.form-input-time {
+  padding: 0.5rem;
+  border: 2px solid #000;
+  border-radius: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  width: 90%;
+}
+
 
 .signup-link {
   display: flex;
@@ -168,4 +185,16 @@
 .password-error {
   color: #e53e3e;
   font-size: 0.875rem;
+}
+
+.dash-icon{
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.work-hours-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  font-weight: 900;
 }
