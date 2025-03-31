@@ -47,18 +47,26 @@ export default function FAQPage() {
           >
             <div className="faq-question">
               <span>{faq.question}</span>
-              {openIndex === index ? <FaChevronUp /> : <FaChevronDown />}
+              <span
+                className={`faq-arrow ${openIndex === index ? 'rotate-open' : ''}`}
+              >
+                {openIndex === index ? <FaChevronUp /> : <FaChevronDown />}
+              </span>
             </div>
-            {openIndex === index && (
-              <div className="faq-answer">
-                {faq.answer.split('\n').map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
-            )}
+
+            <div className="faq-answer-wrapper">
+              {openIndex === index && (
+                <div className="faq-answer">
+                  {faq.answer.split('\n').map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
