@@ -1,12 +1,14 @@
 .create-meeting-container {
   padding: 2rem;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
+  justify-content: flex-start;
 }
 
 .create-meeting-container h1 {
   text-align: center;
   margin-bottom: 2rem;
+  
 }
 
 input[type="text"],
@@ -36,10 +38,9 @@ input[type="datetime-local"] {
 }
 
 .save-button {
-  display: block;
-  margin: 2rem auto;
+  margin: 1rem auto;
   padding: 0.6rem 1.5rem;
-  background-color: #4CAF50;
+  background-color: #1d2d44;
   color: white;
   border: none;
   border-radius: 6px;
@@ -85,3 +86,97 @@ input[type="datetime-local"] {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.meeting-contact-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+ 
+.remove-button{
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  background-color: #1d2d44
+}
+
+.add-button {
+  background-color: #1d2d44;
+  color: white;
+  cursor: pointer;
+}
+
+.add-button.added {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.create-meeting-contacts-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.contacts-box {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+}
+.selected-contacts-box{
+  flex: 1;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.contacts-list,
+.selected-contacts-list {
+  list-style: none;
+  padding: 0;
+}
+
+.contact-card,
+.selected-contact-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  align-items: flex-start;
+  max-width: 95%;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.input-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
