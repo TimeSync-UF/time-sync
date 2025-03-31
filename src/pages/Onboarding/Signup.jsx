@@ -1,6 +1,7 @@
 import { supabase, AuthContext } from "../../AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
+import logo from "../../assets/logo.png";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ export default function Signup() {
   return (
     <div className="onboarding-container">
       {/* Logo and Title */}
-      <img src="/logo.png" alt="Logo" className="w-32 h-32" />
+      <img src={logo} alt="Logo" className="logo" />
       <div className="onboarding-header">
         <h1>TimeSync</h1>
         <h4>Connection Across the Globe</h4>

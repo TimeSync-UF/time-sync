@@ -3,6 +3,7 @@ import TimezoneSelect from 'react-timezone-select';
 import { supabase, AuthContext } from "../../AuthProvider";
 import { useNavigate } from "react-router-dom";
 import './Onboarding.css';
+import logo from "../../assets/logo.png";
 
 export default function Onboarding() {
   const [organization, setOrganization] = useState('');
@@ -52,6 +53,7 @@ export default function Onboarding() {
   return (
     <div className="onboarding-container">
       <div className="onboarding-header">
+        <img src={logo} alt="Logo" className="logo" />
         <h1>TimeSync</h1>
         <h4>Connection Across the Globe</h4>
       </div>

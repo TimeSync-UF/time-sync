@@ -37,7 +37,7 @@ export default function HomeCalendar() {
     const [events, setEvents] = useState(mockEvents); // TODO: Remove mockEvents when not needed
 
     useEffect(() => {
-        setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+        // setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
         if (!session?.user?.id) return;
         const userId = session.user.id;
@@ -45,7 +45,7 @@ export default function HomeCalendar() {
         const fetchUserProfile = async () => {
           const { data, error } = await supabase
             .from("Profiles")
-            .select("first_name, id")  
+            .select("first_name, id, timezone")  
             .eq("id", userId)
             .single();
 
@@ -56,7 +56,7 @@ export default function HomeCalendar() {
 
           console.log("Fetched user profile:", data);
           setFirstName(data.first_name);
-
+          setTimeZone(data.timezone); // Set the timezone from the profile
           // Fetch the meetings
           fetchMeetings(data.id);
         };
@@ -116,7 +116,7 @@ export default function HomeCalendar() {
                         <ul>
                             <li onClick={() => navigate("/create-meeting")}>Create Meeting</li>
                             <li onClick={() => navigate("/contacts")}>Contacts</li>
-                            <li onClick={() => navigate("/previous-meetings")}>Previous Meetings</li>
+                            {/* <li onClick={() => navigate("/previous-meetings")}>Previous Meetings</li> */}
                             <li onClick={() => navigate("/FAQ")}>FAQ</li>
                         </ul>
                     </div>
@@ -134,8 +134,8 @@ export default function HomeCalendar() {
                     defaultView="month"
                     view={currentView}
                     onView={(view) => setCurrentView(view)}
-                    date={date} // Bind to current date state
-                    onNavigate={handleNavigate} // Handle navigation
+                    date={date}
+                    onNavigate={handleNavigate}
                     onSelectEvent={handleSelectEvent}
                     style={{ height: "100%", width: "100%" }}
                 />
