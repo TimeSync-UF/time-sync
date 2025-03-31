@@ -10,6 +10,11 @@
   padding: 5rem 0;
 }
 
+.logo{
+  width: 11rem;
+  height: 10rem;
+}
+
 .onboarding-header, .login-header, .signup-header {
   display: flex;
   flex-direction: column;
