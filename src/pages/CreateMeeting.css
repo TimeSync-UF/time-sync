@@ -1,12 +1,14 @@
 .create-meeting-container {
   padding: 2rem;
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto;
+  justify-content: flex-start;
 }
 
 .create-meeting-container h1 {
   text-align: center;
   margin-bottom: 2rem;
+  
 }
 
 input[type="text"],
@@ -36,7 +38,6 @@ input[type="datetime-local"] {
 }
 
 .save-button {
-  display: block;
   margin: 1rem auto;
   padding: 0.6rem 1.5rem;
   background-color: #1d2d44;
@@ -93,8 +94,7 @@ input[type="datetime-local"] {
   margin-top: 1rem;
   text-align: left;
 }
-
-.add-button, 
+ 
 .remove-button{
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -105,11 +105,21 @@ input[type="datetime-local"] {
   background-color: #1d2d44
 }
 
-.contacts-container {
+.add-button {
+  background-color: #1d2d44;
+  color: white;
+  cursor: pointer;
+}
+
+.add-button.added {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.create-meeting-contacts-container {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .contacts-box {
@@ -127,7 +137,7 @@ input[type="datetime-local"] {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  height: auto;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -154,6 +164,7 @@ input[type="datetime-local"] {
   flex-direction: column;
   margin-bottom: 10px;
   align-items: flex-start;
+  max-width: 95%;
 }
 
 .input-group label {

@@ -13,6 +13,7 @@ export default function CreateMeeting() {
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
   const [meetings, setMeetings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const { session } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -55,13 +56,26 @@ export default function CreateMeeting() {
 
   const handleAddContact = (contactId) => {
     const contact = contacts.find(c => c.id === contactId);
-    if (!contact || selectedContacts.some(c => c.id === contactId)) return;
+    if (!contact) return;
+  
+    // Add to selected contacts
     setSelectedContacts([...selectedContacts, contact]);
+  
+    // Remove from available contacts
+    setContacts(contacts.filter(c => c.id !== contactId));
   };
-
+  
   const handleRemoveContact = (contactId) => {
+    const contact = selectedContacts.find(c => c.id === contactId);
+    if (!contact) return;
+  
+    // Remove from selected contacts
     setSelectedContacts(selectedContacts.filter(c => c.id !== contactId));
+  
+    // Add back to available contacts
+    setContacts([...contacts, contact]);
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,22 +175,41 @@ export default function CreateMeeting() {
         ></textarea>
       </div>
 
-      <div className="contacts-container">
+      <div className="create-meeting-contacts-container">
         {/* Available Contacts */}
         <div className="contacts-box">
           <h3>Available Contacts</h3>
+          <div className="input-group">
+            <label htmlFor="search-contacts">Search Contacts:</label>
+            <input
+              id="search-contacts"
+              type="text"
+              placeholder="Search by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
           <ul className="contacts-list">
-            {contacts.map((contact) => (
-              <li key={contact.id} className="contact-card">
-                <div>
-                  <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
-                  <h4>Timezone: {contact.timezone}</h4>
-                </div>
-                <button className="add-button" onClick={() => handleAddContact(contact.id)}>Add</button>
-              </li>
-            ))}
+            {contacts
+              .filter(contact =>
+                `${contact.first_name} ${contact.last_name}`
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              )
+              .map((contact) => (
+                <li key={contact.id} className="contact-card">
+                  <div>
+                    <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                    <h4>Timezone: {contact.timezone}</h4>
+                  </div>
+                  <button className="add-button" onClick={() => handleAddContact(contact.id)}>
+                    Add
+                  </button>
+                </li>
+              ))}
           </ul>
         </div>
+
 
         {/* Selected Contacts */}
         <div className="selected-contacts-box">
