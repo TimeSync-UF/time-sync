@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaHome, FaTrash, FaEdit} from "react-icons/fa";
 import './CreateMeeting.css'; // Uses the same CSS as CreateMeeting.jsx
 import { supabase, AuthContext } from "../AuthProvider.jsx";
+import { id } from 'date-fns/locale';
 
 export default function EditMeeting() {
   const { meetingId } = useParams();
@@ -140,8 +141,29 @@ export default function EditMeeting() {
       return;
     }
 
-    // TODO: Implement the update functionality
-    alert("Update functionality not yet implemented");
+    const {data, error} = await supabase
+      .from("Meetings")
+      .upsert({
+        id: meetingId, // Ensure we are updating the correct meeting
+        title,
+        start_time: new Date(startTime).toISOString(),
+        end_time: new Date(endTime).toISOString(),
+        location,
+        description,
+        participants: selectedContacts.map(c => c.id) // Save selected contacts
+      })
+      .select();
+
+      console.log("Meeting id:", meetingId);
+      console.log("Update response:", data, error);
+
+      if(error) {
+        console.error("Error updating meeting:", error.message);
+        alert("Error updating meeting: " + error.message);
+        return;
+      }
+    alert("Meeting Successfully Updated!");
+    navigate("/meeting/:meetingId"); // Redirect to home after successful update
   };
 
   const handleDelete = async () => {
@@ -153,7 +175,19 @@ export default function EditMeeting() {
     if (window.confirm("Are you sure you want to delete this meeting?")) {
       
       // TODO: Implement the delete functionality
-      alert("Delete functionality not yet implemented");
+      const {data, error} = await supabase
+        .from("Meetings")
+        .delete()
+        .eq("id", meetingId);
+      
+        if(error) {
+          console.error("Error deleting meeting:", error.message);
+          alert("Error deleting meeting: " + error.message);
+          return;
+        }
+      alert("Meeting Successfully Deleted!");
+      navigate("/home"); // Redirect to home after successful deletion
+      // alert("Delete functionality not yet implemented");
     }
   };
 
