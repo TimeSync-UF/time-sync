@@ -14,19 +14,12 @@ export default function Profile() {
     last_name: "",
     email: "",
     timezone: "",
-    work_hours: "",
+    work_range: [],
   });
 
   const [timezone, setTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  const [startHour, setStartHour] = useState("9");
-  const [startMinute, setStartMinute] = useState("00");
-  const [startPeriod, setStartPeriod] = useState("AM");
-
-  const [endHour, setEndHour] = useState("5");
-  const [endMinute, setEndMinute] = useState("00");
-  const [endPeriod, setEndPeriod] = useState("PM");
-
+  const [startTime, setStartTime] = useState("09:00");
+  const [endTime, setEndTime] = useState("17:00");
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -54,54 +47,30 @@ export default function Profile() {
         return;
       }
 
-      const [start, end] = (data.work_hours || "9:00 AM - 5:00 PM").split(" - ");
-      const [startHr, startMin, startAmPm] = parseTimeParts(start);
-      const [endHr, endMin, endAmPm] = parseTimeParts(end);
+      const workHours = data.work_range || ["09:00", "17:00"];
 
-      setProfile({
-        ...data,
-        email: session.user.email,
-      });
-
+      setProfile({ ...data, email: session.user.email });
       setTimezone(data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
-      setStartHour(startHr);
-      setStartMinute(startMin);
-      setStartPeriod(startAmPm);
-      setEndHour(endHr);
-      setEndMinute(endMin);
-      setEndPeriod(endAmPm);
+      setStartTime(workHours[0]);
+      setEndTime(workHours[1]);
       setLoading(false);
     };
 
     fetchProfile();
   }, [session, navigate]);
 
-  const parseTimeParts = (time) => {
-    const [timePart, period] = time.trim().split(" ");
-    const [hr, min] = timePart.split(":");
-    return [hr, min, period];
-  };
-
-  const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
-  };
-
   const handleSave = async () => {
-    const assembledWorkHours = `${startHour}:${startMinute} ${startPeriod} - ${endHour}:${endMinute} ${endPeriod}`;
-
     const updatePayload = {
       first_name: profile.first_name,
       last_name: profile.last_name,
-      timezone: timezone,
-      work_hours: assembledWorkHours,
+      timezone,
+      work_range: [startTime, endTime],
     };
-
-    console.log("Update payload:", updatePayload);
 
     const { error } = await supabase
       .from("Profiles")
       .update(updatePayload)
-      .eq("id", session.user.id); // Change to "user_id" if needed
+      .eq("id", session.user.id);
 
     if (error) {
       alert("Error saving profile.");
@@ -111,25 +80,23 @@ export default function Profile() {
     }
 
     if (newPassword) {
-      const { error: pwError } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
+      const { error: pwError } = await supabase.auth.updateUser({ password: newPassword });
       if (pwError) {
         alert("Password update failed: " + pwError.message);
-        console.error("Password update error:", pwError.message || pwError);
       } else {
         alert("Password updated!");
         setNewPassword("");
       }
     }
+
+    navigate("/home"); // Redirect to home after saving profile
   };
 
   if (loading) return <p>Loading...</p>;
   if (errorMessage) return <p>{errorMessage}</p>;
 
-  const hourOptions = [...Array(12).keys()].map((n) => String(n + 1));
-  const minuteOptions = ["00", "15", "30", "45"];
+  // const hourOptions = [...Array(12).keys()].map((n) => String(n + 1));
+  // const minuteOptions = ["00", "15", "30", "45"];
 
   return (
     <div className="profile-container">
@@ -145,7 +112,7 @@ export default function Profile() {
         type="text"
         name="first_name"
         value={profile.first_name}
-        onChange={handleChange}
+        onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
       />
 
       <label>Last Name:</label>
@@ -153,7 +120,7 @@ export default function Profile() {
         type="text"
         name="last_name"
         value={profile.last_name}
-        onChange={handleChange}
+        onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
       />
 
       <label>Email:</label>
@@ -166,42 +133,12 @@ export default function Profile() {
       />
 
       <label>Work Hours:</label>
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-        <div>
-          <p>Start Time</p>
-          <select value={startHour} onChange={(e) => setStartHour(e.target.value)}>
-            {hourOptions.map((h) => (
-              <option key={h} value={h}>{h}</option>
-            ))}
-          </select>
-          :
-          <select value={startMinute} onChange={(e) => setStartMinute(e.target.value)}>
-            {minuteOptions.map((m) => (
-              <option key={m} value={m}>{m}</option>
-            ))}
-          </select>
-          <select value={startPeriod} onChange={(e) => setStartPeriod(e.target.value)}>
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
-        </div>
-        <div>
-          <p>End Time</p>
-          <select value={endHour} onChange={(e) => setEndHour(e.target.value)}>
-            {hourOptions.map((h) => (
-              <option key={h} value={h}>{h}</option>
-            ))}
-          </select>
-          :
-          <select value={endMinute} onChange={(e) => setEndMinute(e.target.value)}>
-            {minuteOptions.map((m) => (
-              <option key={m} value={m}>{m}</option>
-            ))}
-          </select>
-          <select value={endPeriod} onChange={(e) => setEndPeriod(e.target.value)}>
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
+      <div className="form-group-time">
+        <label htmlFor="work-hours" className="form-label">Work Hours</label>
+        <div className="work-hours-container">
+          <input type="time" step="360" id="start-time" name="start-time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="form-input-time" />
+          <div className="dash-icon"> - </div>
+          <input type="time" step="360" id="end-time" name="end-time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="form-input-time" />
         </div>
       </div>
 
