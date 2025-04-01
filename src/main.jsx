@@ -14,6 +14,7 @@ import Login from './pages/Onboarding/Login.jsx';
 import Signup from './pages/Onboarding/Signup.jsx';
 import Onboarding from './pages/Onboarding/Onboarding.jsx';
 import { AuthProvider } from "./AuthProvider.jsx";
+import Profile from "./pages/Profile.jsx";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/login" element={<Login /> }/>
           <Route path="/signup" element={<Signup /> }/>
           <Route path="/onboarding" element={<Onboarding /> }/>
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
