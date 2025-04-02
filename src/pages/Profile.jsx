@@ -134,7 +134,6 @@ export default function Profile() {
 
       <label>Work Hours:</label>
       <div className="form-group-time">
-        <label htmlFor="work-hours" className="form-label">Work Hours</label>
         <div className="work-hours-container">
           <input type="time" step="360" id="start-time" name="start-time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="form-input-time" />
           <div className="dash-icon"> - </div>
