@@ -178,15 +178,9 @@ export default function MeetingHeatmap() {
             </div>
 
             <h1>Meeting Heatmap</h1>
-            {/* Map times at whcih participant max is available */}
-            <h4>
-                {bestTimes.length === 1 
-                    ? `Best time for meeting: ${bestTimes[0]}`
-                    : bestTimes.length > 1
-                        ? `Best times for meeting: ${bestTimes.join(", ")}`
-                        : "No available times found."}
-            </h4> 
-            <ResponsiveContainer width="100%" height={300}>
+            <h4>This is calculated by looking at all participants' timezones.</h4>
+            
+            <ResponsiveContainer width="100%" height={125}>
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 40 }}>
                     <XAxis 
                         type="number"
@@ -210,28 +204,40 @@ export default function MeetingHeatmap() {
                 </ScatterChart>
             </ResponsiveContainer>
 
-            <div>
-                 {/* Start Time Input */}
-                <div className="input-group">
-                    <label htmlFor="start-time">Start Time:</label>
-                    <input
-                    id="start-time"
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    required
-                    />
-                </div>
+            {/* Map times at whcih participant max is available
+            <h4>
+                {bestTimes.length === 1 
+                    ? `*The best time for meeting is ${bestTimes[0]}`
+                    : bestTimes.length > 1
+                        ? `*The best times for meeting are ${bestTimes.join(", ")}`
+                        : "No available times found."}
+            </h4>  */}
 
-                {/* End Time Input */}
-                <div className="input-group">
-                    <label htmlFor="end-time">End Time:</label>
-                    <input
-                    id="end-time"
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    />
+            <div className="create-meeting-container">
+                <div className="form-group-time">
+                    {/* Start Time Input */}
+                    <div className="time-container">
+                        <label htmlFor="start-time">Start Time:</label>
+                        <input
+                        id="start-time"
+                        type="time"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="form-input-time"
+                        required
+                        />
+
+                    {/* End Time Input */}
+                        <label htmlFor="end-time">End Time:</label>
+                        <input
+                        id="end-time"
+                        type="time"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="form-input-time"
+                        required
+                        />
+                    </div>
                 </div>
 
                 {/* Submit Button */}

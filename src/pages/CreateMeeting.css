@@ -244,3 +244,25 @@ textarea {
   margin-top: 2rem;
   width: 100%;
 }
+
+.form-input-time {
+  padding: 0.5rem;
+  border: 2px solid #000;
+  border-radius: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  width: 90%;
+}
+
+.form-group-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.time-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  font-weight: 900;
+}
