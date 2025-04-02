@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import './CreateMeeting.css';
 import { supabase, AuthContext } from "../AuthProvider.jsx";
@@ -80,7 +80,7 @@ export default function CreateMeeting() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !startTime || !endTime) {
+    if (!title) {
       alert("Please fill in all fields.");
       return;
     }
@@ -96,7 +96,9 @@ export default function CreateMeeting() {
 
     const { data, error } = await supabase
       .from("Meetings")
-      .insert([meetingData]);
+      .insert([meetingData])
+      .select("id")
+      .single();
 
     if (error) {
       console.error("Error creating meeting:", error.message);
@@ -108,6 +110,11 @@ export default function CreateMeeting() {
     setStartTime('');
     setEndTime('');
     setSelectedContacts([]);
+
+    const meetingId = data.id;
+    console.log("New Meeting ID:", meetingId);
+
+    navigate(`/${meetingId}/heatmap`);
   };
 
   return (
