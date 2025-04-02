@@ -116,6 +116,7 @@ export default function HomeCalendar() {
                         <ul>
                             <li onClick={() => navigate("/create-meeting")}>Create Meeting</li>
                             <li onClick={() => navigate("/contacts")}>Contacts</li>
+                            <li onClick={() => navigate("/profile")}>Profile</li>
                             {/* <li onClick={() => navigate("/previous-meetings")}>Previous Meetings</li> */}
                             <li onClick={() => navigate("/FAQ")}>FAQ</li>
                         </ul>
