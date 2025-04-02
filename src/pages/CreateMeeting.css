@@ -236,3 +236,11 @@ textarea {
   border-radius: 5px;
   font-size: 16px;
 }
+
+.heatmap-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  width: 100%;
+}
