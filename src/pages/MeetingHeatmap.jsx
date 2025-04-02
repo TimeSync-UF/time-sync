@@ -170,11 +170,30 @@ export default function MeetingHeatmap() {
         navigate(`/meeting/${meetingId}`);
     }
 
+    // if user clicks, should ask if they want to leave before finishing meeting. if yes, delete meeting
+    const handleHomeButton = async () => {
+        if (window.confirm("Are you sure you want to leave? New meeting data will be lost.")) {
+            const {data, error} = await supabase
+            .from("Meetings")
+            .delete()
+            .eq("id", meetingId);
+            
+            if(error) {
+                console.error("Error deleting meeting:", error.message);
+                alert("Error deleting meeting: " + error.message);
+                return;
+            }
+            alert("Meeting deleted");
+            navigate("/home"); // Redirect to home after successful deletion
+        }
+    }
+
     return (
         <div>
             {/* Home Button */}
-            <div className="home-button" onClick={() => navigate("/home")}>
+            <div className="home-button" onClick={() => handleHomeButton()}>
                 <FaHome />
+
             </div>
 
             <h1>Meeting Heatmap</h1>
