@@ -84,11 +84,15 @@ export default function CreateMeeting() {
       alert("Please fill in all fields.");
       return;
     }
+    
+    const startTimeDate = new Date(startTime).toISOString();
+    // end date = startTimeDate + 1 hour
+    const endTimeDate = new Date(new Date(startTimeDate).getTime() + 60 * 60 * 1000).toISOString();
 
     const meetingData = {
       title,
-      start_time: new Date(startTime).toISOString(),
-      end_time: new Date(endTime).toISOString(),
+      start_time: startTimeDate,
+      end_time: endTimeDate,
       location,
       description,
       participants: selectedContacts.map(c => c.id),
@@ -140,26 +144,26 @@ export default function CreateMeeting() {
 
       {/* Start Time Input */}
       <div className="input-group">
-        <label htmlFor="start-time">Start Time:</label>
+        <label htmlFor="start-time">Date:</label>
         <input
           id="start-time"
-          type="datetime-local"
+          type="date"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           required
         />
       </div>
 
-      {/* End Time Input */}
+      {/* End Time Input
       <div className="input-group">
         <label htmlFor="end-time">End Time:</label>
         <input
           id="end-time"
-          type="datetime-local"
+          type="date"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
         />
-      </div>
+      </div> */}
 
       {/* Location Input */}
       <div className="input-group">
@@ -237,7 +241,7 @@ export default function CreateMeeting() {
       </div>
 
 
-      <button className="save-button" onClick={handleSubmit}>Create Meeting</button>
+      <button className="save-button" onClick={handleSubmit}>Generate Heatmap</button>
 
       {meetings.length > 0 && (
         <div className="meetings-section">

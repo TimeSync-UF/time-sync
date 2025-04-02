@@ -9,6 +9,7 @@ import { AuthContext } from "../AuthProvider.jsx";
 import { DateTime } from "luxon";
 import "./CreateMeeting.css";
 import { HiOutlineBarsArrowDown } from "react-icons/hi2";
+import { set } from "date-fns";
 
 export default function MeetingHeatmap() {
     const navigate = useNavigate();
@@ -18,6 +19,10 @@ export default function MeetingHeatmap() {
     const [heatmapData, setHeatmapData] = useState([]);
     const [hostWorkRange, setHostWorkRange] = useState([0, 24]);
     const [bestTimes, setBestTimes] = useState([]);
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     useEffect(() => {
         if (!session?.user?.id || !meetingId) return;
@@ -27,7 +32,7 @@ export default function MeetingHeatmap() {
                 // Fetch meeting details
                 const { data: meetingData, error: meetingError } = await supabase
                     .from("Meetings")
-                    .select("host, participants")
+                    .select("host, participants, start_time, end_time")
                     .eq("id", meetingId)
                     .single();
 
@@ -36,6 +41,9 @@ export default function MeetingHeatmap() {
                     console.error("Invalid meeting data:", meetingData);
                     return;
                 }
+
+                setStartDate(meetingData.start_time);
+                setEndDate(meetingData.end_time);
 
                 const hostId = meetingData.host;
 
@@ -132,6 +140,36 @@ export default function MeetingHeatmap() {
         return "#1d2d44";                  
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!startTime || !endTime) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (endTime <= startTime) {
+            alert("End time must be after start time.");
+            return;
+        }
+        
+        const { data, error } = await supabase
+            .from("Meetings")
+            .upsert({
+                id: meetingId,
+                start_time: new Date(`${startDate} ${startTime}:00`).toISOString,
+                end_time: new Date(`${endDate} ${endTime}:00`).toISOString,
+            })
+            .select("id")
+            .single();
+
+        if (error) {
+        console.error("Error creating meeting:", error.message);
+        return;
+        }
+
+        navigate(`/meeting/${meetingId}`);
+    }
+
     return (
         <div>
             {/* Home Button */}
@@ -140,7 +178,14 @@ export default function MeetingHeatmap() {
             </div>
 
             <h1>Meeting Heatmap</h1>
-
+            {/* Map times at whcih participant max is available */}
+            <h4>
+                {bestTimes.length === 1 
+                    ? `Best time for meeting: ${bestTimes[0]}`
+                    : bestTimes.length > 1
+                        ? `Best times for meeting: ${bestTimes.join(", ")}`
+                        : "No available times found."}
+            </h4> 
             <ResponsiveContainer width="100%" height={300}>
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 40 }}>
                     <XAxis 
@@ -166,17 +211,31 @@ export default function MeetingHeatmap() {
             </ResponsiveContainer>
 
             <div>
-                {/* Calculate maximum participants in schedule */}
-                <h2>Maximum Participants</h2>
-                <p>
-                    The maximum number of participants available for a meeting at any given hour is:
-                    {Math.max(...heatmapData.map(entry => entry.z))}
-                </p>
-                {/* Map times at whcih participant max is available */}
-                <h2>Best Time to Schedule</h2>
-                <p>
-                    The best time to schedule a meeting is {bestTimes}
-                </p> 
+                 {/* Start Time Input */}
+                <div className="input-group">
+                    <label htmlFor="start-time">Start Time:</label>
+                    <input
+                    id="start-time"
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    required
+                    />
+                </div>
+
+                {/* End Time Input */}
+                <div className="input-group">
+                    <label htmlFor="end-time">End Time:</label>
+                    <input
+                    id="end-time"
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    />
+                </div>
+
+                {/* Submit Button */}
+                <button className="save-button" onClick={handleSubmit}>Finalize Meeting</button>
             </div>
         </div>
     );
