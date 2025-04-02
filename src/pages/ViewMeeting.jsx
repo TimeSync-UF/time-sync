@@ -31,6 +31,18 @@ const mockMeetings = { // TODO: Remove this when not needed
   }
 };
 
+const calculateDuration = (startTime, endTime) => {
+  if (!startTime || !endTime) return null;
+  
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  
+  const diffMs = end - start;
+  const diffMinutes = Math.round(diffMs / 60000);
+  
+  return diffMinutes;
+};
+
 export default function ViewMeeting() {
   const { meetingId } = useParams();
   const navigate = useNavigate();
@@ -74,6 +86,15 @@ export default function ViewMeeting() {
           if (participantsError) throw participantsError;
           setParticipants(participantsData);
         }
+
+        // Calculate duration
+        const duration = calculateDuration(meetingData.start_time, meetingData.end_time);
+        
+        // Add duration to meeting data
+        setMeeting({
+          ...meetingData,
+          duration: duration
+        });
       } catch (err) {
         console.error("Error fetching meeting details:", err.message);
         setError(err.message);

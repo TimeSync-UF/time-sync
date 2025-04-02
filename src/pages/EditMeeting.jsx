@@ -103,7 +103,13 @@ export default function EditMeeting() {
   }, [meetingId, session]);
 
   const formatDateForInput = (date) => {
-    return date.toISOString().slice(0, 16);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const handleAddContact = (contactId) => {
@@ -163,7 +169,7 @@ export default function EditMeeting() {
         return;
       }
     alert("Meeting Successfully Updated!");
-    navigate("/meeting/:meetingId"); // Redirect to home after successful update
+    navigate(`/meeting/${meetingId}`); // Redirect to meeting details page
   };
 
   const handleDelete = async () => {
@@ -187,7 +193,6 @@ export default function EditMeeting() {
         }
       alert("Meeting Successfully Deleted!");
       navigate("/home"); // Redirect to home after successful deletion
-      // alert("Delete functionality not yet implemented");
     }
   };
 

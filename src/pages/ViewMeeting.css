@@ -30,6 +30,7 @@
 .meeting-actions {
   display: flex;
   gap: 1rem;
+  justify-content: flex-end;
 }
 
 .edit-button {
