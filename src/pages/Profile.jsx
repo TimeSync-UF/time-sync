@@ -17,7 +17,7 @@ export default function Profile() {
     work_range: [],
   });
 
-  const [timezone, setTimezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [timezone, setTimezone] = useState('');
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("17:00");
   const [newPassword, setNewPassword] = useState("");
@@ -50,7 +50,7 @@ export default function Profile() {
       const workHours = data.work_range || ["09:00", "17:00"];
 
       setProfile({ ...data, email: session.user.email });
-      setTimezone(data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone);
+      setTimezone(data.timezone);
       setStartTime(workHours[0]);
       setEndTime(workHours[1]);
       setLoading(false);
@@ -63,7 +63,7 @@ export default function Profile() {
     const updatePayload = {
       first_name: profile.first_name,
       last_name: profile.last_name,
-      timezone,
+      timezone: timezone,
       work_range: [startTime, endTime],
     };
 
@@ -89,18 +89,14 @@ export default function Profile() {
       }
     }
 
-    navigate("/home"); // Redirect to home after saving profile
+    navigate("/home");
   };
 
   if (loading) return <p>Loading...</p>;
   if (errorMessage) return <p>{errorMessage}</p>;
 
-  // const hourOptions = [...Array(12).keys()].map((n) => String(n + 1));
-  // const minuteOptions = ["00", "15", "30", "45"];
-
   return (
     <div className="profile-container">
-      {/* Home button like in Contacts */}
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
       </div>
@@ -128,8 +124,11 @@ export default function Profile() {
 
       <label>Timezone:</label>
       <TimezoneSelect
-        value={{ value: timezone, label: timezone }}
-        onChange={(selected) => setTimezone(selected.value)}
+        id="timezone"
+        name="timezone"
+        value={timezone}
+        onChange={(selectedOption) => setTimezone(selectedOption.value)}
+        required
       />
 
       <label>Work Hours:</label>
