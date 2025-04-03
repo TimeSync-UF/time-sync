@@ -157,10 +157,6 @@
   text-align: center;
 }
 
-.save-button:hover {
-  background-color: #45a049;
-}
-
 .contact-card {
   display: flex;
   justify-content: space-between;

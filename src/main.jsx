@@ -30,7 +30,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/previous-meetings" element={<PreviousMeetings /> }/>
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/FAQ" element={<FAQ /> }/>
-          <Route path="/meeting-heatmap" element={<MeetingHeatmap /> }/>
+          <Route path="/:meetingId/heatmap" element={<MeetingHeatmap /> }/>
           <Route path="/login" element={<Login /> }/>
           <Route path="/signup" element={<Signup /> }/>
           <Route path="/onboarding" element={<Onboarding /> }/>
