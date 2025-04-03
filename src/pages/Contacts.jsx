@@ -238,7 +238,7 @@ export default function Contacts() {
                   Timezone: {contact.timezone || "Not set"}
                 </h4>
               </div>
-              <button className="delete-button" onClick={() => handleDelete(contact.id)}>
+              <button className="contacts-delete-button" onClick={() => handleDelete(contact.id)}>
                 <MdDeleteForever />
               </button>
             </li>

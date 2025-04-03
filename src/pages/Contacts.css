@@ -169,8 +169,8 @@
   text-align: left;
 }
 
-.delete-button {
-  color: #1d2d44;
+.contacts-delete-button {
+  color:#f10000;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
