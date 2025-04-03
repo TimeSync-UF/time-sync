@@ -169,7 +169,7 @@ export default function EditMeeting() {
         return;
       }
     alert("Meeting Successfully Updated!");
-    navigate(`/meeting/${meetingId}`); // Redirect to meeting details page
+    navigate(`/meeting/${meetingId}`); // Redirect to the view page of the updated meeting
   };
 
   const handleDelete = async () => {

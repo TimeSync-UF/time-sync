@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import './CreateMeeting.css';
 import { supabase, AuthContext } from "../AuthProvider.jsx";
@@ -80,15 +80,19 @@ export default function CreateMeeting() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !startTime || !endTime) {
+    if (!title) {
       alert("Please fill in all fields.");
       return;
     }
+    
+    const startTimeDate = new Date(startTime).toISOString();
+    // end date = startTimeDate + 1 hour
+    const endTimeDate = new Date(new Date(startTimeDate).getTime() + 60 * 60 * 1000).toISOString();
 
     const meetingData = {
       title,
-      start_time: new Date(startTime).toISOString(),
-      end_time: new Date(endTime).toISOString(),
+      start_time: startTimeDate,
+      end_time: endTimeDate,
       location,
       description,
       participants: selectedContacts.map(c => c.id),
@@ -96,7 +100,9 @@ export default function CreateMeeting() {
 
     const { data, error } = await supabase
       .from("Meetings")
-      .insert([meetingData]);
+      .insert([meetingData])
+      .select("id")
+      .single();
 
     if (error) {
       console.error("Error creating meeting:", error.message);
@@ -108,7 +114,11 @@ export default function CreateMeeting() {
     setStartTime('');
     setEndTime('');
     setSelectedContacts([]);
-    alert("Meeting created successfully!");
+
+    const meetingId = data.id;
+    console.log("New Meeting ID:", meetingId);
+
+    navigate(`/${meetingId}/heatmap`);
   };
 
   return (
@@ -134,26 +144,26 @@ export default function CreateMeeting() {
 
       {/* Start Time Input */}
       <div className="input-group">
-        <label htmlFor="start-time">Start Time:</label>
+        <label htmlFor="start-time">Date:</label>
         <input
           id="start-time"
-          type="datetime-local"
+          type="date"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           required
         />
       </div>
 
-      {/* End Time Input */}
+      {/* End Time Input
       <div className="input-group">
         <label htmlFor="end-time">End Time:</label>
         <input
           id="end-time"
-          type="datetime-local"
+          type="date"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
         />
-      </div>
+      </div> */}
 
       {/* Location Input */}
       <div className="input-group">
@@ -240,7 +250,7 @@ export default function CreateMeeting() {
       </div>
 
 
-      <button className="save-button" onClick={handleSubmit}>Create Meeting</button>
+      <button className="save-button" onClick={handleSubmit}>Generate Heatmap</button>
 
       {meetings.length > 0 && (
         <div className="meetings-section">
