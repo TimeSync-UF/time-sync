@@ -250,6 +250,20 @@ textarea {
   font-size: 16px;
 }
 
+.contact-card div,
+.selected-contact-card div {
+  flex: 1;
+  text-align: left;
+}
+
+.contact-card h3,
+.selected-contact-card h3,
+.contact-card h4,
+.selected-contact-card h4 {
+  margin: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 .heatmap-container {
   display: flex;
   justify-content: center;

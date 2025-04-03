@@ -125,7 +125,9 @@ export default function HomeCalendar() {
             </button>
             
             <h1>Hi, {firstName}!</h1>
-            <h4>Your timezone: {timeZone}</h4>
+            <h4 style={!timeZone ? {color: "#e74c3c"} : {}}>
+                Your timezone: {timeZone || "Not set"}
+            </h4>
             <div style={{ height: "500px" }}>
                 <Calendar
                     localizer={localizer}

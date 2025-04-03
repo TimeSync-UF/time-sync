@@ -12,9 +12,30 @@ const calculateDuration = (startTime, endTime) => {
   const end = new Date(endTime);
   
   const diffMs = end - start;
-  const diffMinutes = Math.round(diffMs / 60000);
   
-  return diffMinutes;
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  
+  let durationParts = [];
+  if (days > 0) {
+    durationParts.push(`${days} day${days !== 1 ? 's' : ''}`);
+  }
+  if (hours > 0) {
+    durationParts.push(`${hours} hour${hours !== 1 ? 's' : ''}`);
+  }
+  if (minutes > 0 || (days === 0 && hours === 0)) {
+    durationParts.push(`${minutes} minute${minutes !== 1 ? 's' : ''}`);
+  }
+  
+  if (durationParts.length === 1) {
+    return durationParts[0];
+  } else if (durationParts.length === 2) {
+    return `${durationParts[0]} and ${durationParts[1]}`;
+  } else {
+    const lastPart = durationParts.pop();
+    return `${durationParts.join(', ')}, and ${lastPart}`;
+  }
 };
 
 export default function ViewMeeting() {
@@ -104,7 +125,7 @@ export default function ViewMeeting() {
           <h2>Time & Date</h2>
           <p><strong>Start:</strong> {formatDateTime(meeting.start_time)} {meeting.displayTimezone && `(${meeting.displayTimezone})`}</p>
           <p><strong>End:</strong> {formatDateTime(meeting.end_time)} {meeting.displayTimezone && `(${meeting.displayTimezone})`}</p>
-          <p><strong>Duration:</strong> {meeting.duration || "Not specified"} minutes</p>
+          <p><strong>Duration:</strong> {meeting.duration || "Not specified"}</p>
         </div>
 
         <div className="detail-section">
@@ -122,7 +143,9 @@ export default function ViewMeeting() {
                   <div className="participant-info">
                     <h3>{participant.first_name} {participant.last_name}</h3>
                     <p>{participant.email}</p>
-                    <p>Timezone: {participant.timezone}</p>
+                    <p style={!participant.timezone ? {color: "#e74c3c"} : {}}>
+                      Timezone: {participant.timezone || "Not set"}
+                    </p>
                   </div>
                 </li>
               ))}
