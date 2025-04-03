@@ -5,32 +5,6 @@ import { FaHome, FaEdit, FaUserFriends } from "react-icons/fa";
 import { format } from "date-fns";
 import "./ViewMeeting.css";
 
-// Mock meeting data for testing
-const mockMeetings = { // TODO: Remove this when not needed
-  "mock-meeting-1": {
-    id: "mock-meeting-1",
-    title: "Project Review",
-    start_time: new Date(new Date().setHours(14, 0, 0)).toISOString(),
-    end_time: new Date(new Date().setHours(15, 30, 0)).toISOString(),
-    location: "Zoom",
-    description: "Review project progress and discuss next steps with the development team.",
-    duration: 90,
-    displayTimezone: "New York (ET)",
-    participants: []
-  },
-  "mock-meeting-2": {
-    id: "mock-meeting-2",
-    title: "Client Meeting",
-    start_time: new Date(new Date().setHours(10, 0, 0)).toISOString(),
-    end_time: new Date(new Date().setHours(11, 0, 0)).toISOString(),
-    location: "Microsoft Teams",
-    description: "Meeting with client to discuss requirements for the new feature set.",
-    duration: 60,
-    displayTimezone: "Los Angeles (PT)",
-    participants: []
-  }
-};
-
 const calculateDuration = (startTime, endTime) => {
   if (!startTime || !endTime) return null;
   
@@ -53,14 +27,6 @@ export default function ViewMeeting() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // If this is a mock meeting ID, use mock data
-    if (meetingId.startsWith('mock-meeting')) {
-      setMeeting(mockMeetings[meetingId]);
-      setLoading(false);
-      return;
-    }
-    
-    // Else, proceed with real data
     if (!session?.user?.id) return;
     
     const fetchMeetingDetails = async () => {

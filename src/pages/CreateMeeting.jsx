@@ -108,6 +108,7 @@ export default function CreateMeeting() {
     setStartTime('');
     setEndTime('');
     setSelectedContacts([]);
+    alert("Meeting created successfully!");
   };
 
   return (

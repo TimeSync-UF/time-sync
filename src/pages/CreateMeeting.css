@@ -8,7 +8,6 @@
 .create-meeting-container h1 {
   text-align: center;
   margin-bottom: 2rem;
-  
 }
 
 input[type="text"],
@@ -42,17 +41,31 @@ textarea {
 
 .meeting-actions {
   display: flex;
-  justify-content: center;
+  justify-content: center !important;
   align-items: center;
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin: 2rem auto !important;
   width: 100%;
+}
+
+.meeting-actions button.save-button,
+.meeting-actions button.delete-button {
+  margin: 0 0px !important;
+  justify-content: center !important;
 }
 
 .create-meeting-container > button {
   margin-left: auto !important;
   margin-right: auto !important;
   margin-top: 2rem !important;
+}
+
+/* For the View Meeting page - keep Edit button on the right */
+.meeting-header .meeting-actions {
+  display: flex;
+  justify-content: flex-end !important;
+  gap: 1rem;
+  margin: 0;
 }
 
 .create-button,
