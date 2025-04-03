@@ -4,14 +4,18 @@ import { supabase, AuthContext } from "../../AuthProvider";
 import { useNavigate } from "react-router-dom";
 import './Onboarding.css';
 import logo from "../../assets/logo.png";
+import { GoDash } from "react-icons/go";
 
 export default function Onboarding() {
   const [organization, setOrganization] = useState('');
-  const [timezone, setTimezone] = useState('');
+  const [timezone, setTimezone] = useState({});
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [workRange, setWorkRange] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const { session } = useContext(AuthContext);
-
+  
   // Fetch user session and profile data
   useEffect(() => {
     const fetchUser = async () => {
@@ -33,19 +37,26 @@ export default function Onboarding() {
       return;
     }
 
+    const timezoneLabel = timezone?.label || timezone;
+    console.log("Timezone label:", timezone);
+    
+    const workHours = [startTime, endTime];
+
     const { data, error } = await supabase
       .from("Profiles")
-      .upsert({
+      .update({
         id: session.user.id,
-        organization,
-        timezone
+        organization: organization,
+        timezone: timezoneLabel, 
+        work_range: workHours,
       })
+      .eq("id", session.user.id)
       .select();
     if (error) {
       alert("Error updating profile: " + error.message);
       return;
     }
-
+    
     alert("Information added successfully!");
     navigate("/home");
   };
@@ -76,10 +87,34 @@ export default function Onboarding() {
             id="timezone"
             name="timezone"
             value={timezone}
-            onChange={(selectedOption) => setTimezone(selectedOption.value)}
+            onChange={(selectedOption) => setTimezone(selectedOption)}
             className="form-input"
             required
           />
+        </div>
+        <div className="form-group-time">
+        <label htmlFor="work-hours" className="form-label">Work Hours</label>
+          <div className="work-hours-container">
+            <input
+              type="time"
+              step="360"
+              id="start-time"
+              name="start-time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="form-input-time"
+            />
+            <div className="dash-icon"> - </div>
+            <input
+              type="time"
+              step="360"
+              id="end-time"
+              name="end-time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="form-input-time"
+            />
+          </div>
         </div>
         <button type="submit" className="submit-button">
           Finish Setup
