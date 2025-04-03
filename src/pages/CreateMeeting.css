@@ -263,6 +263,7 @@ textarea {
   margin: 5px 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
   
 .heatmap-container {
   display: flex;
