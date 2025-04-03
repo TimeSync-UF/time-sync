@@ -12,6 +12,7 @@ export default function Contacts() {
   const [showModal, setShowModal] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const { session } = useContext(AuthContext);
+  const [addedContacts, setAddedContacts] = useState({});
 
   useEffect(() => {
     if (!session?.user?.id) return;
@@ -70,6 +71,11 @@ export default function Contacts() {
   };
 
   const handleAddContact = async (contactId) => {
+    setAddedContacts(prev => ({
+      ...prev,
+      [contactId]: !prev[contactId]
+    }));
+    
     const { error } = await supabase
       .from("Profiles")
       .update({ contacts: supabase.raw(`array_append(contacts, '${contactId}')`) })
@@ -139,7 +145,12 @@ export default function Contacts() {
                   filteredUsers.map((user) => (
                     <li key={user.id} className="search-item">
                       <span>{user.first_name} {user.last_name}</span>
-                      <button onClick={() => handleAddContact(user.id)}>Add</button>
+                      <button 
+                        className={addedContacts[user.id] ? 'added' : ''} 
+                        onClick={() => handleAddContact(user.id)}
+                      >
+                        Add
+                      </button>
                     </li>
                   ))
                 ) : (
