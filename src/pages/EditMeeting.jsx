@@ -290,7 +290,10 @@ export default function EditMeeting() {
                 <li key={contact.id} className="contact-card">
                   <div>
                     <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
-                    <h4>Timezone: {contact.timezone}</h4>
+                    <h4>Email: {contact.email}</h4>
+                    <h4 style={!contact.timezone ? {color: "#e74c3c"} : {}}>
+                      Timezone: {contact.timezone || "Not set"}
+                    </h4>
                   </div>
                   <button className="add-button" onClick={() => handleAddContact(contact.id)}>
                     Add
@@ -307,7 +310,13 @@ export default function EditMeeting() {
             <ul className="selected-contacts-list">
               {selectedContacts.map((contact) => (
                 <li key={contact.id} className="selected-contact-card">
-                  <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                  <div>
+                    <h3>{`${contact.first_name} ${contact.last_name}`}</h3>
+                    <h4>Email: {contact.email}</h4>
+                    <h4 style={!contact.timezone ? {color: "#e74c3c"} : {}}>
+                      Timezone: {contact.timezone || "Not set"}
+                    </h4>
+                  </div>
                   <button className="remove-button" onClick={() => handleRemoveContact(contact.id)}>Remove</button>
                 </li>
               ))}

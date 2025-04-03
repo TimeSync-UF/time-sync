@@ -269,3 +269,7 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.contacts-search-container {
+  text-align: left;
+}
