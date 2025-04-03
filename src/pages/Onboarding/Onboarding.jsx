@@ -37,7 +37,7 @@ export default function Onboarding() {
       return;
     }
 
-    const timezoneLabel = timezone?.label || timezone;
+    const timezoneLabel = timezone?.value || timezone;
     console.log("Timezone label:", timezone);
     
     const workHours = [startTime, endTime];
