@@ -63,6 +63,8 @@ export default function MeetingHeatmap() {
                 const hostTimezone = hostData.timezone;
                 const [hostStart, hostEnd] = hostData.work_range || [0, 24];
                 setHostWorkRange([hostStart, hostEnd]);
+                const hostStartHour = parseInt(hostStart.split(":")[0], 10);
+                const hostEndHour = parseInt(hostEnd.split(":")[0], 10);
 
                 // Fetch participant details
                 const { data: participantDetails, error: participantError } = await supabase
@@ -100,12 +102,8 @@ export default function MeetingHeatmap() {
 
                     // Loop over the participant's work range and check if the hour is within the host's work range
                     for (let hour = startHostHour; hour < endHostHour; hour++) {
-                        let currentHour = DateTime.fromObject(hour, "HH:mm:ss", { zone: hostTimezone });
-
-                        if (currentHour >= hostStartTime && currentHour < hostEndTime) {
-                            hourAvailability[hour]++;
-                        }
-                    }
+                        hourAvailability[hour]++;
+                    }                                      
                 });
 
                 console.log("Participants:", participantDetails);
@@ -120,7 +118,7 @@ export default function MeetingHeatmap() {
                 setHeatmapData(formattedHeatmapData);
 
                 const maxCount = Math.max(...formattedHeatmapData.map(entry => entry.z));
-                const bestTimesCalculated = heatmapData.filter(entry => entry.z === maxCount).map(entry => `${entry.x}:00`);
+                const bestTimesCalculated = formattedHeatmapData.filter(entry => entry.z === maxCount).map(entry => `${entry.x}:00`);
                 setBestTimes(bestTimesCalculated);
 
             } catch (error) {
@@ -146,29 +144,45 @@ export default function MeetingHeatmap() {
             alert("Please fill in all fields.");
             return;
         }
-
+    
         if (endTime <= startTime) {
             alert("End time must be after start time.");
             return;
         }
-        
+    
+        // Combine startDate and startTime using Luxon
+        const startDateTime = DateTime.fromISO(startDate).set({
+            hour: parseInt(startTime.split(":")[0], 10),
+            minute: parseInt(startTime.split(":")[1], 10)
+        }).toISO();
+    
+        const endDateTime = DateTime.fromISO(endDate).set({
+            hour: parseInt(endTime.split(":")[0], 10),
+            minute: parseInt(endTime.split(":")[1], 10)
+        }).toISO();
+    
         const { data, error } = await supabase
             .from("Meetings")
             .upsert({
                 id: meetingId,
-                start_time: new Date(`${startDate} ${startTime}:00`).toISOString,
-                end_time: new Date(`${endDate} ${endTime}:00`).toISOString,
+                start_time: startDateTime,
+                end_time: endDateTime,
             })
             .select("id")
             .single();
-
+    
         if (error) {
-        console.error("Error creating meeting:", error.message);
-        return;
+            console.error("Error creating meeting:", error.message);
+            return;
         }
-
-        navigate(`/meeting/${meetingId}`);
-    }
+    
+        console.log("start date", startDate);
+        console.log("end date", endDate);
+        console.log("start time", startTime);
+        console.log("end time", endTime);
+        navigate(`/meeting/${meetingId}`); 
+    };
+    
 
     // if user clicks, should ask if they want to leave before finishing meeting. if yes, delete meeting
     const handleHomeButton = async () => {
@@ -193,19 +207,20 @@ export default function MeetingHeatmap() {
             {/* Home Button */}
             <div className="home-button" onClick={() => handleHomeButton()}>
                 <FaHome />
-
+                Home
             </div>
 
             <h1>Meeting Heatmap</h1>
             <h4>This is calculated by looking at all participants' timezones.</h4>
-            
+            <h4>The darker the color & larger the square, the more participants are available — across all hours.</h4>
+
             <ResponsiveContainer width="100%" height={125}>
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 40 }}>
                     <XAxis 
                         type="number"
                         dataKey="x"
                         name="Hour"
-                        domain={[hostWorkRange[0], hostWorkRange[1] - 1]} 
+                        domain={[0, 23]} 
                         tickFormatter={(hour) => `${hour}:00`} 
                         tickCount={24} 
                     />

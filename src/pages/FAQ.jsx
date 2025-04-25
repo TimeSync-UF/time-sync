@@ -33,7 +33,8 @@ export default function FAQPage() {
   return (
     <div className="faq-container">
       <button className="home-button" onClick={() => navigate('/')}>
-        <FaHome /> Home
+        <FaHome /> 
+        Home
       </button>
 
       <h1 className="faq-heading">Frequently Asked Questions</h1>

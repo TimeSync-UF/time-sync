@@ -202,6 +202,7 @@ export default function Contacts() {
       {/* Home button */}
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
+        Home
       </div>
 
       <div className="contacts-header">

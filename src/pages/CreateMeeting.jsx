@@ -125,6 +125,7 @@ export default function CreateMeeting() {
     <div className="create-meeting-container">
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
+        Home
       </div>
 
       <h1>Create Meeting</h1>

@@ -9,23 +9,6 @@ import { supabase, AuthContext } from "../AuthProvider.jsx";
 
 const localizer = globalizeLocalizer(globalize);
 
-const mockEvents = [ // TODO: Remove this when not needed
-  {
-    title: "Project Review",
-    start: new Date(new Date().setHours(14, 0, 0)),
-    end: new Date(new Date().setHours(15, 30, 0)),
-    allDay: false,
-    meetingId: "mock-meeting-1",
-  },
-  {
-    title: "Client Meeting",
-    start: new Date(new Date().setHours(10, 0, 0)),
-    end: new Date(new Date().setHours(11, 0, 0)),
-    allDay: false,
-    meetingId: "mock-meeting-2",
-  }
-];
-
 export default function HomeCalendar() {
     const navigate = useNavigate();
     const [timeZone, setTimeZone] = useState("");
@@ -34,7 +17,7 @@ export default function HomeCalendar() {
     const [date, setDate] = useState(new Date()); // Track the current date
     const { session } = useContext(AuthContext);
     const [firstName, setFirstName] = useState("");
-    const [events, setEvents] = useState(mockEvents); // TODO: Remove mockEvents when not needed
+    const [events, setEvents] = useState(''); // TODO: Remove mockEvents when not needed
 
     useEffect(() => {
         // setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);

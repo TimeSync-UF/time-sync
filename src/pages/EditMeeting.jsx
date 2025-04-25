@@ -203,6 +203,7 @@ export default function EditMeeting() {
     <div className="create-meeting-container">
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
+        Home
       </div>
 
       <h1>Edit Meeting</h1>

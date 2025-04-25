@@ -82,7 +82,7 @@ export default function Profile() {
     if (newPassword) {
       const { error: pwError } = await supabase.auth.updateUser({ password: newPassword });
       if (pwError) {
-        alert("Password update failed: " + pwError.message);
+        // alert("Password update failed: " + pwError.message);
       } else {
         alert("Password updated!");
         setNewPassword("");
@@ -99,6 +99,7 @@ export default function Profile() {
     <div className="profile-container">
       <div className="home-button" onClick={() => navigate("/home")}>
         <FaHome />
+        Home
       </div>
 
       <h1>My Profile</h1>

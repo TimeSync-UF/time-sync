@@ -108,6 +108,7 @@ export default function ViewMeeting() {
       <div className="navigation-buttons">
         <button className="home-button" onClick={() => navigate("/home")}>
           <FaHome />
+          Home
         </button>
       </div>
 
