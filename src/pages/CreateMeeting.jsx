@@ -80,7 +80,7 @@ export default function CreateMeeting() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title) {
+    if (!title || !startTime) {
       alert("Please fill in all fields.");
       return;
     }
