@@ -149,40 +149,42 @@ export default function MeetingHeatmap() {
             alert("End time must be after start time.");
             return;
         }
-    
-        // Combine startDate and startTime using Luxon
-        const startDateTime = DateTime.fromISO(startDate).set({
-            hour: parseInt(startTime.split(":")[0], 10),
-            minute: parseInt(startTime.split(":")[1], 10)
-        }).toISO();
-    
-        const endDateTime = DateTime.fromISO(endDate).set({
-            hour: parseInt(endTime.split(":")[0], 10),
-            minute: parseInt(endTime.split(":")[1], 10)
-        }).toISO();
-    
-        const { data, error } = await supabase
-            .from("Meetings")
-            .upsert({
-                id: meetingId,
-                start_time: startDateTime,
-                end_time: endDateTime,
-            })
-            .select("id")
-            .single();
-    
-        if (error) {
-            console.error("Error creating meeting:", error.message);
-            return;
+        
+        console.log("Submitting meeting with times:", startTime, endTime);
+        
+        try {
+            const startDateTime = new Date(startDate);
+            const endDateTime = new Date(endDate);
+            
+            // Get start and end hours and minutes from the time strings
+            const [startHours, startMinutes] = startTime.split(':').map(Number);
+            const [endHours, endMinutes] = endTime.split(':').map(Number);
+            
+            // Set the hours and minutes on the date objects
+            startDateTime.setHours(startHours, startMinutes, 0);
+            endDateTime.setHours(endHours, endMinutes, 0);
+                        
+            const { data, error } = await supabase
+                .from("Meetings")
+                .upsert({
+                    id: meetingId,
+                    start_time: startDateTime.toISOString(),
+                    end_time: endDateTime.toISOString(),
+                })
+                .select("id")
+                .single();
+
+            if (error) {
+                alert("Error saving meeting: " + error.message);
+                return;
+            }
+            navigate(`/meeting/${meetingId}`);
+
+        } catch (err) {
+            console.error("Exception during meeting save:", err);
+            alert("An error occurred: " + err.message);
         }
-    
-        console.log("start date", startDate);
-        console.log("end date", endDate);
-        console.log("start time", startTime);
-        console.log("end time", endTime);
-        navigate(`/meeting/${meetingId}`); 
-    };
-    
+    }
 
     // if user clicks, should ask if they want to leave before finishing meeting. if yes, delete meeting
     const handleHomeButton = async () => {
